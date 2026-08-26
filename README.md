@@ -4,7 +4,7 @@
   <img alt="revant-999's GitHub profile" src="dark_mode.svg" />
 </picture>
 
-## Hi there 👋
+
 
 <!--
 **revant-999/revant-999** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
