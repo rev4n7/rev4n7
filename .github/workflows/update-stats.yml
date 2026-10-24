@@ -1,0 +1,32 @@
+name: Update profile card stats
+
+on:
+  schedule:
+    - cron: "17 3 * * *"  # every day at 03:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Refresh the stats on both cards
+        env:
+          # The built-in token only sees public repos; add a STATS_TOKEN secret to count private commits too
+          GH_TOKEN: ${{ secrets.STATS_TOKEN || github.token }}
+        run: python3 .github/scripts/update_stats.py
+
+      - name: Commit the cards if anything changed
+        run: |
+          if git diff --quiet; then
+            echo "Stats unchanged"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Update profile card stats"
+          git push
